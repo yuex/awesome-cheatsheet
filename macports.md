@@ -4,9 +4,17 @@ Sync Portfiles
 
     port selfupdate
 
+see outdated
+
+    port installed outdated
+
 update outdated ports
 
     port upgrade outdated
+
+see inactive
+
+    port installed inactive
 
 uninstall inactive
 
@@ -21,7 +29,8 @@ see info or vairants
     port info emacs
     port variants emacs
 
-installed from source, otherwise macports will try to install from binary
+installed from source. otherwise macports will try to install from binary,
+make it impossible to use local patch
 
     port -s install emacs
 
