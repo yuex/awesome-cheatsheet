@@ -30,6 +30,8 @@ use last result
 
 # Syntax
 
+there is no guard in SML
+
 as syntax in pattern matching
 
 ```` sml
