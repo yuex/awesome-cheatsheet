@@ -24,6 +24,16 @@ control print
     Control.Print.printDepth := 1024;
     Control.Print.stringDepth := 1024;
 
+write string to file
+
+    fun write fname str =
+        let
+            val fs = TextIO.openOut fname
+        in
+            TextIO.output (fs,str);
+            TextIO.closeOut fs
+        end;
+
 use last result
 
     - it;
