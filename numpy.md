@@ -56,3 +56,21 @@
     np.dot : mat(n,k) -> mat(k,m) -> mat(n,m)
 
     np.true_divide : int -> int -> float
+
+# Outer not only Product
+
+See [ufunc](https://docs.scipy.org/doc/numpy/reference/ufuncs.html#comparison-functions)
+`outer` is one op of any ufunc. E.g., outer equal comparision which plays equal
+comparision in an outer product fasion
+
+    a = np.array([1,2,3,1,2,3)
+    b = np.array([1,2,3])
+
+    1 * np.equal.outer(a,b)
+    array([[1, 0, 0],
+           [0, 1, 0],
+           [0, 0, 1],
+           [1, 0, 0],
+           [0, 1, 0],
+           [0, 0, 1]])
+
