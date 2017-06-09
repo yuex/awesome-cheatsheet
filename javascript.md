@@ -33,6 +33,7 @@ string
     str.replace(pat,str) // first occurence
     str.indexOf(substr) !== -1 // predicate: if substr in str
     str.trim
+    str.substring(start, length)
 
 only one type for numbers, no matter what it is, integer, float, double
 
@@ -73,7 +74,7 @@ for iteration
     for (var key in arr)
         // key is key or index
 
-array operations
+array in JavaScript is heterogeneous. array operations
 
     arr.length
     arr.indexOf(element) == -1
@@ -108,7 +109,7 @@ in following ways.
     (function() {
     }('some param'));
 
-    !function() {
+    !function() { // looks nicer
     }('some param');
 
     // could also be named
@@ -120,13 +121,108 @@ entire library in one self-invoking function
 
     (function( window, undefined ) {
 
-    // locals objects inside the function
-    var document = window.document;
-    var jQuery;
+        // locals objects inside the function
+        var document = window.document;
+        var jQuery;
 
-    // Lots of cool code here that defines jQuery.
+        // Lots of cool code here that defines jQuery.
 
-    // Expose jQuery to the global object
-    window.jQuery = jQuery;
-    window.$ = jQuery;
+        // Expose jQuery to the global object
+        window.jQuery = jQuery;
+        window.$ = jQuery;
+
     })(window);
+
+Another way is to define one or two global object for the entire application.
+and then put everything else in those global variables. Many organizations
+prefer this way, including Google
+
+    // One way to use this technique.
+    var myApp = {};
+
+    myApp.utils = {};
+    myApp.settings = {};
+
+    myApp.utils.trim = function() {
+    };
+
+    // Another example - the technique is the name, but
+    // some people prefer this syntax.
+    var myOtherApp = {
+        utils: {
+            trim: function() { /* ... */ }
+        },
+        settings: {
+            // ...
+        }
+    };
+
+interactive
+
+    alert("hello");
+    confirm(msg) == true;
+    prompt(msg) == string;
+    console.log(msg) // print
+
+# The Modern JavaScript Tutorial
+
+developer console in Chrome `cmd+opt+j`
+
+embed the script in html
+
+    <!DOCTYPE HTML>
+    <html>
+    <body>
+        <p>Before the script...</p>
+        <script>
+            alert( 'Hello, world!' );
+        </script>
+        <p>...After the script.</p>
+    </body>
+    </html>
+
+refer to external js. once `src` is set, the script content is ignored
+
+    <script src="/path/to/script.js"></script>
+
+in most cases, js will auto-insert semicolons. but there are cases it won't.  so
+always add the semicolons to avoid confusion and errors.
+
+comments `//` and `/* */`
+
+js has experienced a major re-design (ECMAScript5, ES5). but to provide backward
+compatibility, it is turned off by default. to turn it on, `use strict`. it must
+be put on top of the script and be active to the end. though it could be put
+just before a function and be active through the decorated function, it is not a
+widely adopted practice to do so. it is recommended to always turn it on
+
+multiple variables declaration, three tastes
+
+    let user = 'John';
+    let age = 25;
+    let message = 'Hello';
+
+    let user = 'John',
+        age = 25,
+        message = 'Hello';
+
+    let user = 'John'
+      , age = 25
+      , message = 'Hello';
+
+    const myBirthday = '18.04.1982'; // make things unchangable
+    // var is old-school, there's some subtle differences
+
+numbers in js are all float. thus there are special numbers like 'Infinity',
+`-Infinity`, `NaN`
+
+    1 / 0 === Infinity
+    "hello" / 0 === NaN
+    // the math operations are closed in this setting
+
+string with template support by using `\`\``
+
+    let str = "Hello";
+    let str2 = 'Single quotes are ok too';
+    let phrase = `can embed ${str}`;
+
