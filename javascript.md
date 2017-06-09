@@ -412,7 +412,191 @@ value for objects are provided by
     // copies all properties of src1, src2, ... into dest
 
 but this is a shallow copy. deep copy is not provided in js. use 3rd-party lib
-like [lodash][]'s `_.cloneDeep(obj)` as in [](https://lodash.com/docs#cloneDeep)
+like [lodash][]'s `_.cloneDeep(obj)` as in [https://lodash.com/docs#cloneDeep](https://lodash.com/docs#cloneDeep)
+
+## Symbol
+
+by spec, property keys of objects have to be either of string type or symbol
+type. symbols with same names are different
+
+    Symbol("id") === Symbol("id") // false
+
+one implication is that property name created by symbol could never be
+overwritten. because have no way to it.
+
+dot notation will be converted to string. but bracket notation supports both
+string type and symbol type.
+
+symbols do not participate in `for..in`. and thus called hidden properties
+
+global symbol registry. sometimes, global symbols are needed. symbols with same
+name should always be same. this is provided by
+
+    let sym = Symbol.for("name"); // if the symbol did not exist, it is created
+    let symAgain = Symbol.for("name");
+    sym === symAgain; // true
+
+    let name = Symbol.keyFor(sym); // get name by symbol
+
+there are also system symbols defined by js and accessible via `Symbol.*`
+
+## This
+
+use `this` in the object method to refer to data stored in the same object.
+`this` is resolved at runtime. in non-strict mode, if this cannot be resolved,
+it will be bound to the top-level object, the `window` in a browser. this
+behavior is fixed by strict mode.
+
+but the `this` binding is only passed by `obj.method()`. it's not reserved when
+uusing the `obj.method` as a first-class citizen. also, arrow functions have no
+`this`. what a mess
+
+## toPrimitive
+
+convert object to primitives. object are always true as a boolean
+
+    obj[Symbol.toPrimitive] = function(hint) {
+        switch(hint) {
+        case "string":
+            break;
+        case "number":
+            break;
+        case "default":
+            break;
+        }
+    }
+
+historically, if `Symbol.toPrimitive` doesn't exist, `toString()` will be called
+if hint is `"string"`; `valueOf()` will be called if hint is `"number"` or
+`"default"`;
+
+In practice, it’s often enough to implement only `obj.toString()` as a
+“catch-all” method for all conversions that returns a “human-readable”
+representation of an object, for logging or debugging purposes.
+
+## new constructor
+
+constructor function is regular function with some conventions. `new` will
+decorate it to return `this`
+
+    function User(name, age) {
+        this.name = name
+        this.age  = age
+    }
+
+    let user = new User("John", 30);
+
+inside the constructor function, `new.target` is a boolean to indicate if this
+function is called with `new`. it is usually used to redirect regular function
+call to new constructor.
+
+    function User(name) {
+        if (!new.target) {
+            return new User(name);
+        }
+        this.name = name;
+    }
+
+    let user = User("John"); // will be redirected to new User()
+
+usually, constructor functions do not return. but return statement is allowed.
+the rule is simple, primitive return is ignored. object is returned instead of
+`this`
+
+methods are allowed in constructor functions.
+
+    function User(name) {
+        this.name = name
+        this.sayHi = function() {
+            console.log(this.name);
+        };
+    }
+
+## Primitives
+
+primitives are low-level, efficient implementation. but JavaScript decided to
+make them looks like objects. whenever a method on a primitive type is called, a
+wrapper object is created using that primitive. the method is called. then the
+wrapper object is discarded.
+
+numbers
+
+    num.toString(base)
+    num.toFixed(number_of_precision_digit)
+    isFinite(num)
+    isNaN(num)
+
+string. backquote could span multiple lines. the newline will be reserved. but
+single and double quote cannot. strings are immutable and coded in UTF16
+
+    str.legnth
+    str.toUpperCase()
+    str.toLowerCase()
+    str.indexOf()
+    str.lastIndexOf() // search from the end
+    str.includes(pat[,pos]) // pat in str[pos:]
+    str.startsWith()
+    str.endsWith()
+    str.slice(start[,end]) // get a substring, could be negative, from end
+    str.substring(start[,end]) // start could be greater than end
+    str.substr(str[,length])
+    str.codePointAt(pos) // unicode of str[pos]
+    String.fromCodePoint(code)
+    str.split(sep)
+
+## Arrays
+
+arrays are heterogenerous object
+
+    let arr = new Array();
+    let arr = [];
+    arr.pop() // pop from end
+    arr.push(elem) // push to end
+    arr.shift() // pop from head
+    arr.unshift(elem) // push to head
+
+loop throught arrays
+
+    for (let i = 0; i < arr.length; i++)
+    for (let val of arr) // iterates through values
+
+`for (let key of arr)` is a bad idea. because it iterates through all properties
+it is optimized for general objects instead of arrays.
+
+`arr.length` is writable. increase it cause nothing. but decrease it will
+truncate the array
+
+    new Array(num) // create array of given size
+    new Array(0,1,2) // [0,1,2]
+    arr.fill(elem) // fill all elements with elem
+    delete arr[pos]
+    arr.splice(index[, deleteCount, elem1, ..., elemN])
+    // start from index, deleteCount, and replace them with elem1..elemN
+    // no holes. deleted items are returned as array
+    // negative index indicates end
+    arr.slice(start,end)
+
+    arr.concat(arr1,arr2,...)
+    // array-like object is concated as a whole.
+    // unless obj[Symbol.isConcatSpreadable] === true, elements are concated
+
+    arr.indexOf(elem[,from])
+    arr.lastIndexOf(elem[,from])
+    arr.includes(elem[,from])
+
+    arr.find(function(item,index,array){return false})
+    // function called for each element.
+    // if return true, search stops and return the element
+    arr.findIndex(fun(e,i,a){}) // return index
+    arr.filter(fun(e,i,a){})
+    arr.map(fun(e,i,a){})
+
+    arr.sort(compare(a,b){}) // in-place
+    arr.sort((a,b) => a - b) // sort with arrow function
+
+    str.split(sep)
+    arr.join(sep)
+
 
 
 [Google's Style Guide]: https://google.github.io/styleguide/javascriptguide.xml
