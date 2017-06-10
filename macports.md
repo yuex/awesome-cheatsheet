@@ -46,4 +46,5 @@ patch emacs to support 24bit. The patch has to be put under the `files`
 directory of macports. remember to force source install
 
     # Portfile
+    # /opt/local/var/macports/sources/rsync.macports.org/macports/release/tarballs/ports/
     patchfiles emacs.patch
