@@ -15,6 +15,14 @@ function. This can lead to somewhat verbose code.
 
 File name must be same with class name
 
+    // @Foo.java
+    // pacakge package.path;
+    public class Foo {
+        public static void main(String[] args) {
+            System.out.println("Hello World!");
+        }
+    }
+
     javac /package/path/Foo.java
     java package.path.Foo
 
