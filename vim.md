@@ -12,3 +12,9 @@ conficting files.
     zo          - open folded text
     zc          - close folded text
     :diffupdate - re-scan the files for differences]
+
+# Vim
+
+do not use any rc file
+
+    vim -u NONE
