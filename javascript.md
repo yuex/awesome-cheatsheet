@@ -242,7 +242,11 @@ will be evaluated and then coerced to string. BTW, there's no character in js.
     let phrase = `can embed ${3 * 4}`;
 
 `null` and `undefined` in js have types of their own. but in practice, `null` is
-used as a normal value. `undefined` is only used to check against js.
+used as a normal value. `undefined` is only used to check against js. Best
+explaination about `null` and `undefined`
+
+* `undefined` is the value JS itself uses to indicate the absence of a value
+* `null` is the value the programmer should use to indicate the absence of a value
 
 `typeof` reveals the type of a value. it's a operator but can be used as a
 function like `sizeof` in C.
